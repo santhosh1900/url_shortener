@@ -1,0 +1,8 @@
+#Setup Env
+python -m venv venv
+
+#Install all dependencies
+pip install -r requirements.txt
+
+#Track pip dependencies
+pip freeze > requirements.txt
