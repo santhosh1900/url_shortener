@@ -69,7 +69,7 @@ async def getAnalytics(
     except DataNotFoundError as e:
         raise HTTPException(
             status_code=404,
-            detail=e
+            detail=str(e)
         )
     except Exception as e:
         print(e)
