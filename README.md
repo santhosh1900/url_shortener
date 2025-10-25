@@ -333,6 +333,25 @@ This diagram illustrates the main components and data flow within the URL Shorte
 
 
 
+## ⚖️ Design Decisions and Trade-Offs
+
+The system architecture and technology stack were chosen to meet the core requirements of low latency redirects, data durability, idempotency, and scalability under a high read-to-write ratio.
+
+#### 1. Client Interaction (The Request Flow)
+
+
+| Decision |Rationale  | Trade-Off                      |
+| :-------- | :------- | :-------------------------------- |
+| Technology Stack: FastAPI, PostgreSQL, Redis      | High Performance & Development Speed: FastAPI with async I/O offers near-Go performance with Python's rapid development. PostgreSQL provides durability and analytics, and Redis ensures extreme speed. |Complexity: Using two databases (PostgreSQL and Redis) adds complexity to deployment and requires careful data consistency logic in the application layer. |
+| Short Code Generation: Base62 Encoding of Sequential IDs (Deterministic)      | Guaranteed Uniqueness & Idempotency: Deriving the short code from a sequential, unique ID eliminates the need for expensive database collision checks, crucial for handling 10,000 new URLs/day. |Guessability/Predictability: Sequential codes, even encoded, are more predictable than random strings, potentially allowing malicious users to crawl the short URL space.|
+| Data Storage: PostgreSQL (Primary DB)      | Strong Consistency & Durability: PostgreSQL is the source of truth for all mappings, metadata (created_at, last_accessed_at), and detailed analytics, ensuring data integrity over the required 5-year retention period. |Slower Redirect Latency: A direct database hit on every redirect would violate the $< 100 \text{ ms}$ latency requirement. This necessitates the use of a caching layer. |
+| Caching Layer: Redis (In-Memory)      |Achieve Low Latency: Serves the high volume of read requests (redirects) directly from memory, meeting the 100 ms constraint and significantly offloading the primary database. |Data Freshness: Cached click counts may be slightly stale compared to the PostgreSQL counter, as the counter is only updated in the DB on a cache miss. This lag is an acceptable trade-off for speed. |
+| Redirect Status Code: HTTP 307 Temporary Redirect      |Allows Click Analytics: Forces the client browser to hit our service on every access, enabling the service to accurately increment click_count and record granular analytics data. |Higher Server Load: The server must handle every single redirect request, increasing the overall load compared to using a permanent 301 redirect. |
+| Rate Limiting Implementation: Per-IP using Python's RateLimiter      |Protection from Abuse: Simple and effective protection against DDoS/spamming the URL creation endpoint, fulfilling a core requirement without custom, complex Redis scripting. |Reliance on External Library: This ties the implementation to a specific Python package, making future language or architecture transitions slightly more complex.|
+
+##
+
+#### The choice to use both PostgreSQL and Redis is the central trade-off, prioritizing durability/analytics (PostgreSQL) and performance/latency (Redis) over architectural simplicity.
 
 
 
