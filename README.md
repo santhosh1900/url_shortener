@@ -14,6 +14,7 @@ cd url_shortener
 
 2. **Verify .env file**
 
+```
 POSTGRES_USER=postgres
 
 POSTGRES_PASSWORD=0000
@@ -31,6 +32,7 @@ REDIS_PORT=6379
 PORT=8080
 
 JWT_SECRET=<your-secret>
+```
 
 3. **Build and start the containers locally**
 
