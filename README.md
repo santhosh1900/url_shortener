@@ -9,8 +9,10 @@
 
 1. **Clone the repository**
 
+```
 git clone https://github.com/santhosh1900/url_shortener.git
 cd url_shortener
+```
 
 2. **Verify .env file**
 
@@ -41,24 +43,21 @@ JWT_SECRET=13adfadvgwef342$4124rvs412r12f!@1231223caca3344adfavad41332dsvdsbsdva
 docker-compose up --build
 
 This command will:
-
-    - Build the FastAPI backend service
-
-    - Start PostgreSQL and Redis containers
-    
-    - Load environment variables from .env
+- Build the FastAPI backend service
+- Start PostgreSQL and Redis containers
+- Load environment variables from .env
 
 4. **Access the application**
 
-FastAPI backend: http://localhost:8080
-
-PostgreSQL: dbt:5432 (credentials from .env)
-
-Redis: redis:6379 (credentials from .env)
+- FastAPI backend: http://localhost:8080
+- PostgreSQL: dbt:5432 (credentials from .env)
+- Redis: redis:6379 (credentials from .env)
 
 5. **Stop the application**
 
+```
 docker-compose down
+```
 
 6. **Run using published Docker image (no local build required)**
 
