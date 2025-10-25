@@ -70,4 +70,143 @@ GitHub Repository: https://github.com/santhosh1900/url_shortener
 
 Docker Image: https://hub.docker.com/repository/docker/sandydev007/url-shortener/general
 
+##
+
+
+
+## API Reference
+Base URL: http://localhost:8080
+##
+
+#### Create Short URL
+
+```http
+  POST /get-shorten-url
+```
+
+#### Body
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `url` | `string` | **Required**. |
+| `customName` | `string` | **Optional**. |
+
+#### Response (Without customName)
+```
+{
+  "success": true,
+  "url": "http://localhost:8080/1pv3WEq3My"
+}
+```
+
+#### Response (With customName eg: sandy)
+```
+{
+  "success": true,
+  "url": "http://localhost:8080/sandy"
+}
+```
+
+##
+
+#### Get URL
+
+```http
+  GET /${short-code}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `short-code`      | `string` | **Required**. Id of item to fetch |
+
+#### Response
+
+307 Temporary Redirect
+
+#### Response (Not Found)
+
+404 URL not found
+
+##
+
+
+#### Admin Login
+
+```http
+  POST /admin-login
+```
+#### Body
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `username` | `string` | **admin** |
+| `password` | `string` | **password@2000** |
+
+#### Response
+Save this access_token as a Bearer Token in the headers (Authorization)
+```
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc2MTQzMDU3NX0.SD-7Z91hwKrJopl5ARpPsSl02WC0wVZCVlgE1ZsrsAc",
+    "token_type": "bearer"
+}
+```
+
+##
+
+#### Get All Urls (Protected Route)
+
+```http
+  GET /get-urls
+```
+
+#### Response
+```
+[
+  {
+      "original_url": "https://redis.io/",
+      "click_count": 0,
+      "id": 1,
+      "created_at": "26/10/2025 : 02:51:05 AM",
+      "last_accessed_at": "",
+      "short_code": "http://localhost:8080/bIlXsGwkoX",
+      "updated_at": "26/10/2025 : 02:51:05 AM",
+      "analytics": "http://localhost:8080/get-analytics/bIlXsGwkoX"
+    },
+    {
+      "original_url": "https://google.com/",
+      "click_count": 10,
+      "id": 1,
+      "created_at": "26/10/2025 : 02:51:05 AM",
+      "last_accessed_at": "",
+      "short_code": "http://localhost:8080/sandy",
+      "updated_at": "26/10/2025 : 02:51:05 AM",
+      "analytics": "http://localhost:8080/get-analytics/sandy"
+    }
+]
+```
+##
+
+#### Get Analytics of the single url
+```http
+  GET /get-analytics/${short-code}
+```
+This route gives you the date wise total_click of the particular short url
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `short-code` | `string` | **Required** |
+
+#### Response
+```
+[
+  {
+    "date": "25/10/2025",
+    "total_clicks": 3,
+    "url": "https://redis.io/",
+    "short_url": "http://localhost:8080/bIlXsGwkoX"
+  }
+]
+```
+
+
 
