@@ -15,23 +15,25 @@ cd url_shortener
 2. **Verify .env file**
 
 ```
+# DB
 POSTGRES_USER=postgres
-
 POSTGRES_PASSWORD=0000
-
 POSTGRES_DB=zocket
-
 POSTGRES_HOST=db
-
 POSTGRES_PORT=5432
-
+SYSTEM_DB=postgres
+#Redis
 REDIS_HOST=redis
-
 REDIS_PORT=6379
-
+# Utilities
+MAX_CODE_LENGTH=10
+BASE_URL=http://localhost:8080
+RATE_LIMITTER_SECONDS=60
+RATE_LIMITTER_REQUESTS=100
 PORT=8080
-
-JWT_SECRET=<your-secret>
+ADMIN=admin
+ADMIN_PASSWORD=password@2000
+JWT_SECRET=13adfadvgwef342$4124rvs412r12f!@1231223caca3344adfavad41332dsvdsbsdvadgefq
 ```
 
 3. **Build and start the containers locally**
