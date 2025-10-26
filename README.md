@@ -329,7 +329,7 @@ This diagram illustrates the main components and data flow within the URL Shorte
                                                        | Long-term Storage
                                                        | URL metadata, click counts
                                                        | detailed analytics
-
+```
 
 
 
